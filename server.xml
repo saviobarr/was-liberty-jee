@@ -1,0 +1,63 @@
+<server description="new server">
+
+	<!-- Enable features -->
+	<featureManager>
+		<feature>javaee-7.0</feature>
+		<feature>json-1.0</feature>
+		<feature>jdbc-4.1</feature>
+		<feature>jpa-2.1</feature>
+		<feature>ejb-3.2</feature>
+	    <feature>localConnector-1.0</feature>
+    </featureManager>
+
+	<!-- This template enables security. To get the full use of all the capabilities, 
+		a keystore and user registry are required. -->
+
+	<!-- For the keystore, default keys are generated and stored in a keystore. 
+		To provide the keystore password, generate an encoded password using bin/securityUtility 
+		encode and add it below in the password attribute of the keyStore element. 
+		Then uncomment the keyStore element. -->
+	<!-- <keyStore password=""/> -->
+
+	<!--For a user registry configuration, configure your user registry. For 
+		example, configure a basic user registry using the basicRegistry element. 
+		Specify your own user name below in the name attribute of the user element. 
+		For the password, generate an encoded password using bin/securityUtility 
+		encode and add it in the password attribute of the user element. Then uncomment 
+		the user element. -->
+	<basicRegistry id="basic" realm="BasicRealm">
+		<!-- <user name="yourUserName" password="" /> -->
+	</basicRegistry>
+
+	<!-- To access this server from a remote client add a host attribute to 
+		the following element, e.g. host="*" -->
+	<httpEndpoint httpPort="9085" httpsPort="9442" id="defaultHttpEndpoint"/>
+
+	<!-- Automatically expand WAR files and EAR files -->
+	<applicationManager autoExpand="true"/>
+
+
+	<keyStore id="defaultKeyStore" password="liberty"/>
+
+	<basicRegistry id="basic" realm="BasicRealm">
+		<user name="liberty" password="liberty"/>
+	</basicRegistry>
+
+	 <library id="oracle-lib">
+        <fileset dir="C:/lib" includes="ojdbc6.jar"/>
+    </library>
+
+    <dataSource id="oracle-ds" jndiName="jdbc/oracle" type="javax.sql.DataSource">
+        <jdbcDriver libraryRef="oracle-lib" id="oracle-driver"/>
+        <connectionManager numConnectionsPerThreadLocal="10" id="ConnectionManager" minPoolSize="1"/>
+        <properties.oracle user="customer" password="1234" url="jdbc:oracle:thin:@//localhost:1521/xe"/>
+    </dataSource>
+	
+	
+	
+	<jpa/>
+
+    <applicationMonitor updateTrigger="mbean"/>
+
+    <webApplication id="Customer" location="Customer.war" name="Customer"/>
+</server>
